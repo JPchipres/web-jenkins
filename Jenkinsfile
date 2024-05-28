@@ -1,6 +1,19 @@
 pipeline {
     agent any
     stages {
+        stage('Inicio') {
+            steps {
+                script {
+                    emailext (
+                        subject: "pipline start: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                        body: """<p>The pipeline ${env.JOB_NAME} #${env.BUILD_NUMBER} was started.</p>
+                                 <p>Check the progress <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
+                        to: 'jchipres@ucol.mx',
+                        from: 'jchipres@ucol.mx',
+                    )
+                }
+            }
+        }
         stage('Deploy') {
             steps {
                 sh 'php -S localhost:8081 -t.'
